@@ -27,4 +27,4 @@ const reducer = combineReducers({ users: genericReducer('users') });
 
 const store = createStore(reducer, applyMiddleware(thunk, logger));
 
-// module.exports = genericLoader;
+export default store;

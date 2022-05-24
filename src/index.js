@@ -1,4 +1,39 @@
 import { genericLoader } from '../store';
+import React from 'react';
+import { createRoot } from 'react-dom/client';
+import { Provider } from 'react-redux';
+import store from '../store';
+import { connect } from 'react-redux';
 
-console.log('hi');
-genericLoader('users');
+class Main extends React.Component {
+  componentDidMount() {
+    console.log(this.props);
+    this.props.genericLoader('users');
+  }
+
+  render() {
+    return <div>Press F12</div>;
+  }
+}
+
+const mapDispatch = (dispatch) => {
+  return {
+    genericLoader: (slice) => dispatch(genericLoader(slice)),
+  };
+};
+
+const Test = connect((state) => state, mapDispatch)(Main);
+
+class Root extends React.Component {
+  render() {
+    return <Test />;
+  }
+}
+
+const root = createRoot(document.getElementById('root'));
+
+root.render(
+  <Provider store={store}>
+    <Root />
+  </Provider>
+);
