@@ -62,6 +62,9 @@ const init = async () => {
 
 init();
 
+// app.use('/index.js', express.static(path.join(__dirname, './index.js')));
+app.use('/dist', express.static(path.join(__dirname, './dist')));
+
 app.get('/', (req, res) => {
   res.sendFile(path.join(__dirname, 'index.html'));
 });
