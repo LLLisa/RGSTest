@@ -3,7 +3,15 @@ import thunk from 'redux-thunk';
 import logger from 'redux-logger';
 import axios from 'axios';
 
-const LOAD_USERS = 'LOAD_USERS';
+import GeneralStore from '/home/lisa/Code/recreational-code/ReduxGeneralStore/index.js';
+// console.log(GeneralStore);
+
+const GS = new GeneralStore('http://localhost:9001', [
+  'users',
+  'accounts',
+  'files',
+]);
+console.log(GS.reducerBody);
 
 //general store-----------------------------
 export const genericLoader = (slice) => {
@@ -23,7 +31,7 @@ const genericReducer = (slice) => {
   };
 };
 
-const reducer = combineReducers({ users: genericReducer('users') });
+const reducer = combineReducers({ ...GS.reducerBody });
 
 const store = createStore(reducer, applyMiddleware(thunk, logger));
 
