@@ -70,9 +70,9 @@ app.get('/', (req, res) => {
   res.sendFile(path.join(__dirname, 'index.html'));
 });
 
-app.get('/generic/:model', async (req, res, next) => {
+app.get('/generic/:slice', async (req, res, next) => {
   try {
-    let searchParam = req.params.model;
+    let searchParam = req.params.slice;
     const regExp = /[A-Z]/;
     if (regExp.test(searchParam)) searchParam = `"${searchParam}"`;
     const response = await db.query(`SELECT * FROM ${searchParam};`);
@@ -81,6 +81,17 @@ app.get('/generic/:model', async (req, res, next) => {
     } else {
       res.send([]);
     }
+  } catch (error) {
+    next(error);
+  }
+});
+
+//$ curl -X POST --data '{"data":{"testdata": "success"}}' -H "Content-Type:application/json" localhost:9001/generic/users
+
+app.post('/generic/:slice', async (req, res, next) => {
+  try {
+    console.log(req.params.slice, req.body.data);
+    res.sendStatus(200);
   } catch (error) {
     next(error);
   }
