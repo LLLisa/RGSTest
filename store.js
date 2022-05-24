@@ -10,7 +10,7 @@ export const genericLoader = (slice) => {
   return async (dispatch) => {
     const response = await axios({
       url: `/generic/${slice}`,
-      baseURL: 'http://localhost:42069',
+      baseURL: 'http://localhost:9001',
     });
     dispatch({ type: `LOAD_${slice}`, payload: response.data });
   };

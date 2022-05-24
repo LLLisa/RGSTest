@@ -22,11 +22,11 @@ const mapDispatch = (dispatch) => {
   };
 };
 
-const Test = connect((state) => state, mapDispatch)(Main);
+const App = connect((state) => state, mapDispatch)(Main);
 
 class Root extends React.Component {
   render() {
-    return <Test />;
+    return <App />;
   }
 }
 

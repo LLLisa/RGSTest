@@ -64,7 +64,24 @@ init();
 
 // app.use('/index.js', express.static(path.join(__dirname, './index.js')));
 app.use('/dist', express.static(path.join(__dirname, './dist')));
+app.use(express.json());
 
 app.get('/', (req, res) => {
   res.sendFile(path.join(__dirname, 'index.html'));
+});
+
+app.get('/generic/:model', async (req, res, next) => {
+  try {
+    let searchParam = req.params.model;
+    const regExp = /[A-Z]/;
+    if (regExp.test(searchParam)) searchParam = `"${searchParam}"`;
+    const response = await db.query(`SELECT * FROM ${searchParam};`);
+    if (response) {
+      res.send(response[0]);
+    } else {
+      res.send([]);
+    }
+  } catch (error) {
+    next(error);
+  }
 });
