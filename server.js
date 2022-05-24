@@ -70,12 +70,12 @@ app.get('/', (req, res) => {
   res.sendFile(path.join(__dirname, 'index.html'));
 });
 
-app.get('/generic/:slice', async (req, res, next) => {
+app.get('/api/:slice', async (req, res, next) => {
   try {
-    let searchParam = req.params.slice;
+    let tableName = req.params.slice;
     const regExp = /[A-Z]/;
-    if (regExp.test(searchParam)) searchParam = `"${searchParam}"`;
-    const response = await db.query(`SELECT * FROM ${searchParam};`);
+    if (regExp.test(tableName)) tableName = `"${tableName}"`;
+    const response = await db.query(`SELECT * FROM ${tableName};`);
     if (response) {
       res.send(response[0]);
     } else {
@@ -86,12 +86,12 @@ app.get('/generic/:slice', async (req, res, next) => {
   }
 });
 
-//$ curl -X POST --data '{"data":{"testdata": "success"}}' -H "Content-Type:application/json" localhost:9001/generic/users
-
-app.post('/generic/:slice', async (req, res, next) => {
+//example crud routes-----------------------------------
+app.post('/api/users', async (req, res, next) => {
   try {
-    console.log(req.params.slice, req.body.data);
-    res.sendStatus(200);
+    const data = req.body;
+    const response = await User.create(data);
+    res.send(response);
   } catch (error) {
     next(error);
   }
