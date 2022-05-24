@@ -70,6 +70,7 @@ app.get('/', (req, res) => {
   res.sendFile(path.join(__dirname, 'index.html'));
 });
 
+//example generic route------------------------
 app.get('/api/:slice', async (req, res, next) => {
   try {
     let tableName = req.params.slice;
@@ -91,6 +92,19 @@ app.post('/api/users', async (req, res, next) => {
   try {
     const data = req.body;
     const response = await User.create(data);
+    res.send(response);
+  } catch (error) {
+    next(error);
+  }
+});
+
+app.put('/api/users', async (req, res, next) => {
+  try {
+    console.log(req.body.identifier);
+    const userToUpdate = await User.findByPk(req.body.identifier.id);
+    console.log(userToUpdate);
+    const data = req.body.data;
+    const response = await userToUpdate.update(data);
     res.send(response);
   } catch (error) {
     next(error);

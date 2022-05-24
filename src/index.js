@@ -11,9 +11,11 @@ class Main extends React.Component {
     this.state = {
       firstName: '',
       lastName: '',
+      selectedUser: '',
     };
     this.handleOnChange = this.handleOnChange.bind(this);
-    this.handleOnClick = this.handleOnClick.bind(this);
+    this.handleCreate = this.handleCreate.bind(this);
+    this.handleUpdate = this.handleUpdate.bind(this);
   }
 
   componentDidMount() {
@@ -22,17 +24,22 @@ class Main extends React.Component {
     });
   }
 
+  componentDidUpdate(prevProps) {
+    if (!prevProps.users.length && this.props.users.length) {
+      this.setState({ selectedUser: this.props.users[0].firstName });
+    }
+  }
+
   handleOnChange(ev) {
     this.setState({ [ev.target.name]: ev.target.value });
   }
 
-  handleOnClick(ev) {
+  handleCreate(ev) {
     ev.preventDefault();
     const output = {
       firstName: this.state.firstName,
       lastName: this.state.lastName,
     };
-    console.log(output);
     this.props.genericPost('users', output);
     this.setState({
       firstName: '',
@@ -40,22 +47,73 @@ class Main extends React.Component {
     });
   }
 
+  handleUpdate(ev) {
+    ev.preventDefault();
+    const user = this.props.users.find(
+      (user) => user.firstName === this.state.selectedUser
+    );
+    console.log(this.state.selectedUser, user);
+    const newInfo = {
+      firstName: this.state.firstName,
+      lastName: this.state.lastName,
+    };
+    console.log(user, newInfo);
+    this.props.genericPut('users', { id: user.id }, newInfo);
+    this.setState({
+      firstName: '',
+      lastName: '',
+    });
+  }
+
   render() {
+    console.log(this.state);
+    const { users } = this.props;
     return (
       <div>
         <h1>Press F12</h1>
+        <p>create user</p>
         <form>
           <input
             name="firstName"
             value={this.state.firstName}
+            placeholder="firstName"
             onChange={this.handleOnChange}
           ></input>
           <input
             name="lastName"
             value={this.state.lastName}
+            placeholder="lastName"
             onChange={this.handleOnChange}
           ></input>
-          <button onClick={this.handleOnClick}>submit</button>
+          <button onClick={this.handleCreate}>submit</button>
+        </form>
+        <p>update user</p>
+        <select
+          name="selectedUser"
+          value={this.state.selectedUser}
+          onChange={this.handleOnChange}
+        >
+          {users.length
+            ? users.map((user) => {
+                return <option key={user.id}>{user.firstName}</option>;
+              })
+            : ''}
+        </select>
+
+        <form>
+          <input
+            name="firstName"
+            value={this.state.firstName}
+            placeholder="firstName"
+            onChange={this.handleOnChange}
+          ></input>
+          <input
+            name="lastName"
+            value={this.state.lastName}
+            placeholder="lastName"
+            onChange={this.handleOnChange}
+          ></input>
+          <button onClick={this.handleUpdate}>update</button>
         </form>
       </div>
     );
@@ -66,6 +124,8 @@ const mapDispatch = (dispatch) => {
   return {
     genericLoad: (slice) => dispatch(GS.genericLoad(slice)),
     genericPost: (slice, data) => dispatch(GS.genericPost(slice, data)),
+    genericPut: (slice, identifier, data) =>
+      dispatch(GS.genericPut(slice, identifier, data)),
   };
 };
 
