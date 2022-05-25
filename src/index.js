@@ -39,7 +39,7 @@ class Main extends React.Component {
 
   handleSelect(ev) {
     const user = this.props.users.find(
-      (user) => user.firstName === ev.target.value
+      (user) => `${user.firstName} ${user.lastName}` === ev.target.value
     );
     this.setState({ selectedUser: user });
   }
@@ -64,7 +64,7 @@ class Main extends React.Component {
     if (firstNamePut.length) newInfo['firstName'] = firstNamePut;
     if (lastNamePut.length) newInfo['lastName'] = lastNamePut;
 
-    this.props.genericPut('users', { id: selectedUser.id }, newInfo);
+    this.props.genericPut('/api', 'users', { id: selectedUser.id }, newInfo);
     this.setState({
       firstNamePut: '',
       lastNamePut: '',
@@ -73,7 +73,7 @@ class Main extends React.Component {
   }
 
   render() {
-    // console.log(this.state, this.props);
+    console.log(this.state, this.props);
     const { users } = this.props;
     return (
       <div>
@@ -102,7 +102,11 @@ class Main extends React.Component {
         >
           {users.length
             ? users.map((user) => {
-                return <option key={user.id}>{user.firstName}</option>;
+                return (
+                  <option key={user.id}>
+                    {user.firstName} {user.lastName}
+                  </option>
+                );
               })
             : ''}
         </select>
@@ -132,8 +136,8 @@ const mapDispatch = (dispatch) => {
     genericLoad: (url, slice) => dispatch(GS.genericLoad(url, slice)),
     genericPost: (url, slice, data) =>
       dispatch(GS.genericPost(url, slice, data)),
-    genericPut: (slice, identifier, data) =>
-      dispatch(GS.genericPut(slice, identifier, data)),
+    genericPut: (url, slice, identifier, data) =>
+      dispatch(GS.genericPut(url, slice, identifier, data)),
   };
 };
 
