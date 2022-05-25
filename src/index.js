@@ -23,7 +23,7 @@ class Main extends React.Component {
 
   componentDidMount() {
     GS.models.forEach((model) => {
-      this.props.genericLoad('/api/', model);
+      this.props.genericLoad('/api', model);
     });
   }
 
@@ -50,7 +50,7 @@ class Main extends React.Component {
       firstName: this.state.firstNamePost,
       lastName: this.state.lastNamePost,
     };
-    this.props.genericPost('users', output);
+    this.props.genericPost('/api', 'users', output);
     this.setState({
       firstNamePost: '',
       lastNamePost: '',
@@ -130,7 +130,8 @@ class Main extends React.Component {
 const mapDispatch = (dispatch) => {
   return {
     genericLoad: (url, slice) => dispatch(GS.genericLoad(url, slice)),
-    genericPost: (slice, data) => dispatch(GS.genericPost(slice, data)),
+    genericPost: (url, slice, data) =>
+      dispatch(GS.genericPost(url, slice, data)),
     genericPut: (slice, identifier, data) =>
       dispatch(GS.genericPut(slice, identifier, data)),
   };
