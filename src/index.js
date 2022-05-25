@@ -9,8 +9,10 @@ class Main extends React.Component {
   constructor() {
     super();
     this.state = {
-      firstName: '',
-      lastName: '',
+      firstNamePost: '',
+      lastNamePost: '',
+      firstNamePut: '',
+      lastNamePut: '',
       selectedUser: {},
     };
     this.handleOnChange = this.handleOnChange.bind(this);
@@ -45,27 +47,27 @@ class Main extends React.Component {
   handleCreate(ev) {
     ev.preventDefault();
     const output = {
-      firstName: this.state.firstName,
-      lastName: this.state.lastName,
+      firstName: this.state.firstNamePost,
+      lastName: this.state.lastNamePost,
     };
     this.props.genericPost('users', output);
     this.setState({
-      firstName: '',
-      lastName: '',
+      firstNamePost: '',
+      lastNamePost: '',
     });
   }
 
   handleUpdate(ev) {
     ev.preventDefault();
-    const { firstName, lastName, selectedUser } = this.state;
+    const { firstNamePut, lastNamePut, selectedUser } = this.state;
     const newInfo = {};
-    if (firstName.length) newInfo['firstName'] = firstName;
-    if (lastName.length) newInfo['lastName'] = lastName;
+    if (firstNamePut.length) newInfo['firstName'] = firstNamePut;
+    if (lastNamePut.length) newInfo['lastName'] = lastNamePut;
 
     this.props.genericPut('users', { id: selectedUser.id }, newInfo);
     this.setState({
-      firstName: '',
-      lastName: '',
+      firstNamePut: '',
+      lastNamePut: '',
     });
     this.setState({ selectedUser: this.props.users[0] });
   }
@@ -79,14 +81,14 @@ class Main extends React.Component {
         <p>create user</p>
         <form>
           <input
-            name="firstName"
-            value={this.state.firstName}
+            name="firstNamePost"
+            value={this.state.firstNamePost}
             placeholder="firstName"
             onChange={this.handleOnChange}
           ></input>
           <input
-            name="lastName"
-            value={this.state.lastName}
+            name="lastNamePost"
+            value={this.state.lastNamePost}
             placeholder="lastName"
             onChange={this.handleOnChange}
           ></input>
@@ -107,14 +109,14 @@ class Main extends React.Component {
 
         <form>
           <input
-            name="firstName"
-            value={this.state.firstName}
+            name="firstNamePut"
+            value={this.state.firstNamePut}
             placeholder="firstName"
             onChange={this.handleOnChange}
           ></input>
           <input
-            name="lastName"
-            value={this.state.lastName}
+            name="lastNamePut"
+            value={this.state.lastNamePut}
             placeholder="lastName"
             onChange={this.handleOnChange}
           ></input>
