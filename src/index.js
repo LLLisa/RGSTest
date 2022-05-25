@@ -11,11 +11,12 @@ class Main extends React.Component {
     this.state = {
       firstName: '',
       lastName: '',
-      selectedUser: '',
+      selectedUser: {},
     };
     this.handleOnChange = this.handleOnChange.bind(this);
     this.handleCreate = this.handleCreate.bind(this);
     this.handleUpdate = this.handleUpdate.bind(this);
+    this.handleSelect = this.handleSelect.bind(this);
   }
 
   componentDidMount() {
@@ -24,14 +25,21 @@ class Main extends React.Component {
     });
   }
 
-  componentDidUpdate(prevProps) {
+  componentDidUpdate(prevProps, prevState) {
     if (!prevProps.users.length && this.props.users.length) {
-      this.setState({ selectedUser: this.props.users[0].firstName });
+      this.setState({ selectedUser: this.props.users[0] });
     }
   }
 
   handleOnChange(ev) {
     this.setState({ [ev.target.name]: ev.target.value });
+  }
+
+  handleSelect(ev) {
+    const user = this.props.users.find(
+      (user) => user.firstName === ev.target.value
+    );
+    this.setState({ selectedUser: user });
   }
 
   handleCreate(ev) {
@@ -49,24 +57,21 @@ class Main extends React.Component {
 
   handleUpdate(ev) {
     ev.preventDefault();
-    const user = this.props.users.find(
-      (user) => user.firstName === this.state.selectedUser
-    );
-    console.log(this.state.selectedUser, user);
-    const newInfo = {
-      firstName: this.state.firstName,
-      lastName: this.state.lastName,
-    };
-    console.log(user, newInfo);
-    this.props.genericPut('users', { id: user.id }, newInfo);
+    const { firstName, lastName, selectedUser } = this.state;
+    const newInfo = {};
+    if (firstName.length) newInfo['firstName'] = firstName;
+    if (lastName.length) newInfo['lastName'] = lastName;
+
+    this.props.genericPut('users', { id: selectedUser.id }, newInfo);
     this.setState({
       firstName: '',
       lastName: '',
     });
+    this.setState({ selectedUser: this.props.users[0] });
   }
 
   render() {
-    console.log(this.state);
+    // console.log(this.state, this.props);
     const { users } = this.props;
     return (
       <div>
@@ -91,7 +96,7 @@ class Main extends React.Component {
         <select
           name="selectedUser"
           value={this.state.selectedUser}
-          onChange={this.handleOnChange}
+          onChange={this.handleSelect}
         >
           {users.length
             ? users.map((user) => {

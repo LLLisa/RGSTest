@@ -100,9 +100,8 @@ app.post('/api/users', async (req, res, next) => {
 
 app.put('/api/users', async (req, res, next) => {
   try {
-    console.log(req.body.identifier);
+    console.log(req);
     const userToUpdate = await User.findByPk(req.body.identifier.id);
-    console.log(userToUpdate);
     const data = req.body.data;
     const response = await userToUpdate.update(data);
     res.send(response);
