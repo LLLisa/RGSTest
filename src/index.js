@@ -21,11 +21,11 @@ class Main extends React.Component {
 
   componentDidMount() {
     GS.models.forEach((model) => {
-      this.props.genericLoad(model);
+      this.props.genericLoad('/api/', model);
     });
   }
 
-  componentDidUpdate(prevProps, prevState) {
+  componentDidUpdate(prevProps) {
     if (!prevProps.users.length && this.props.users.length) {
       this.setState({ selectedUser: this.props.users[0] });
     }
@@ -127,7 +127,7 @@ class Main extends React.Component {
 
 const mapDispatch = (dispatch) => {
   return {
-    genericLoad: (slice) => dispatch(GS.genericLoad(slice)),
+    genericLoad: (url, slice) => dispatch(GS.genericLoad(url, slice)),
     genericPost: (slice, data) => dispatch(GS.genericPost(slice, data)),
     genericPut: (slice, identifier, data) =>
       dispatch(GS.genericPut(slice, identifier, data)),
