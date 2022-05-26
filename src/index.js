@@ -29,7 +29,7 @@ class Main extends React.Component {
   }
 
   componentDidUpdate(prevProps) {
-    if (!prevProps.users.length && this.props.users.length) {
+    if (prevProps.users.length !== this.props.users.length) {
       this.setState({ selectedUser: this.props.users[0] });
     }
   }
@@ -77,17 +77,19 @@ class Main extends React.Component {
       firstNamePut: '',
       lastNamePut: '',
     });
-    // this.setState({ selectedUser: this.props.users[0] });
+    this.setState({ selectedUser: this.props.users[0] });
   }
 
   handleDelete() {
+    console.log(this.state.selectedUser.id);
     this.props.genericDelete('/api', 'users', {
       id: this.state.selectedUser.id,
     });
+    this.setState({ selectedUser: this.props.users[0] });
   }
 
   render() {
-    // console.log(this.state, this.props);
+    console.log(this.state, this.props);
     const { users } = this.props;
     return (
       <div>
