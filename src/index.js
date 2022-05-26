@@ -81,7 +81,9 @@ class Main extends React.Component {
   }
 
   handleDelete() {
-    console.log('click');
+    this.props.genericDelete('/api', 'users', {
+      id: this.state.selectedUser.id,
+    });
   }
 
   render() {

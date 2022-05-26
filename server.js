@@ -112,9 +112,10 @@ app.put('/api/users', async (req, res, next) => {
 
 app.delete('/api/users', async (req, res, next) => {
   try {
-    console.log(req);
-    // const doomedUser = await User.findByPk
-    res.sendStatus(200);
+    // console.log(req.body); //{id:<user.id>}
+    const doomedUser = await User.findByPk(req.body.id);
+    await doomedUser.destroy();
+    res.send(doomedUser);
   } catch (error) {
     next(error);
   }
