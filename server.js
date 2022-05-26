@@ -100,11 +100,21 @@ app.post('/api/users', async (req, res, next) => {
 
 app.put('/api/users', async (req, res, next) => {
   try {
-    console.log(req);
+    // console.log(req);
     const userToUpdate = await User.findByPk(req.body.identifier.id);
     const data = req.body.data;
     const response = await userToUpdate.update(data);
     res.send(response);
+  } catch (error) {
+    next(error);
+  }
+});
+
+app.delete('/api/users', async (req, res, next) => {
+  try {
+    console.log(req);
+    // const doomedUser = await User.findByPk
+    res.sendStatus(200);
   } catch (error) {
     next(error);
   }

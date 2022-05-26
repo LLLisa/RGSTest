@@ -16,9 +16,10 @@ class Main extends React.Component {
       selectedUser: {},
     };
     this.handleOnChange = this.handleOnChange.bind(this);
+    this.handleSelect = this.handleSelect.bind(this);
     this.handleCreate = this.handleCreate.bind(this);
     this.handleUpdate = this.handleUpdate.bind(this);
-    this.handleSelect = this.handleSelect.bind(this);
+    this.handleDelete = this.handleDelete.bind(this);
   }
 
   componentDidMount() {
@@ -57,23 +58,34 @@ class Main extends React.Component {
     });
   }
 
+  //either pass an updated object as 'data' or provide a separate identifier object
+  /*{id:selectedUser.id} *or* {email: '123@fakemail.com'} */
   handleUpdate(ev) {
     ev.preventDefault();
     const { firstNamePut, lastNamePut, selectedUser } = this.state;
     const newInfo = {};
     if (firstNamePut.length) newInfo['firstName'] = firstNamePut;
     if (lastNamePut.length) newInfo['lastName'] = lastNamePut;
-
-    this.props.genericPut('/api', 'users', { id: selectedUser.id }, newInfo);
+    console.log('>>>', selectedUser, newInfo);
+    this.props.genericPut(
+      '/api',
+      'users',
+      { ...selectedUser, ...newInfo }
+      // , { id: selectedUser.id }
+    );
     this.setState({
       firstNamePut: '',
       lastNamePut: '',
     });
-    this.setState({ selectedUser: this.props.users[0] });
+    // this.setState({ selectedUser: this.props.users[0] });
+  }
+
+  handleDelete() {
+    console.log('click');
   }
 
   render() {
-    console.log(this.state, this.props);
+    // console.log(this.state, this.props);
     const { users } = this.props;
     return (
       <div>
@@ -94,10 +106,10 @@ class Main extends React.Component {
           ></input>
           <button onClick={this.handleCreate}>submit</button>
         </form>
-        <p>update user</p>
+        <p>update or delete user</p>
         <select
           name="selectedUser"
-          value={this.state.selectedUser}
+          // value={this.state.selectedUser}
           onChange={this.handleSelect}
         >
           {users.length
@@ -110,7 +122,7 @@ class Main extends React.Component {
               })
             : ''}
         </select>
-
+        <button onClick={this.handleDelete}>delete</button>
         <form>
           <input
             name="firstNamePut"
@@ -136,8 +148,10 @@ const mapDispatch = (dispatch) => {
     genericLoad: (url, slice) => dispatch(GS.genericLoad(url, slice)),
     genericPost: (url, slice, data) =>
       dispatch(GS.genericPost(url, slice, data)),
-    genericPut: (url, slice, identifier, data) =>
-      dispatch(GS.genericPut(url, slice, identifier, data)),
+    genericPut: (url, slice, data, identifier) =>
+      dispatch(GS.genericPut(url, slice, data, identifier)),
+    genericDelete: (url, slice, identifier) =>
+      dispatch(GS.genericDelete(url, slice, identifier)),
   };
 };
 
