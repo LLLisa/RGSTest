@@ -2,7 +2,7 @@ import { createStore, combineReducers, applyMiddleware } from 'redux';
 import thunk from 'redux-thunk';
 import logger from 'redux-logger';
 
-import GeneralStore from '/home/lisa/Code/recreational-code/ReduxGeneralStore/index.js';
+import GeneralStore from 'redux-general-store';
 
 export const GS = new GeneralStore('http://localhost:9001', [
   'users',

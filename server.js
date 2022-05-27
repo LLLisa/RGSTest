@@ -1,3 +1,5 @@
+// createdb acme_db
+
 const Sequelize = require('sequelize');
 const db = new Sequelize('postgres://localhost/acme_db', { logging: false });
 
@@ -70,18 +72,15 @@ app.get('/', (req, res) => {
   res.sendFile(path.join(__dirname, 'index.html'));
 });
 
-//example generic route------------------------
+//example generic loader GET route------------------------
 app.get('/api/:slice', async (req, res, next) => {
   try {
     let tableName = req.params.slice;
+    //table names in postgres are always lowercase unless in quotes
     const regExp = /[A-Z]/;
     if (regExp.test(tableName)) tableName = `"${tableName}"`;
-    const response = await db.query(`SELECT * FROM ${tableName};`);
-    if (response) {
-      res.send(response[0]);
-    } else {
-      res.send([]);
-    }
+    const response = await db.query(`SELECT * FROM ${tableName} ;`);
+    res.send(response[0]);
   } catch (error) {
     next(error);
   }
@@ -100,7 +99,8 @@ app.post('/api/users', async (req, res, next) => {
 
 app.put('/api/users', async (req, res, next) => {
   try {
-    // console.log(req);
+    //generic put sends a req.body that looks like:
+    /*body: {data, identifier} */
     const userToUpdate = await User.findByPk(req.body.identifier.id);
     const data = req.body.data;
     const response = await userToUpdate.update(data);
@@ -112,9 +112,7 @@ app.put('/api/users', async (req, res, next) => {
 
 app.delete('/api/users', async (req, res, next) => {
   try {
-    // console.log('hi', req.body.id); //{id:<user.id>}
     const doomedUser = await User.findByPk(req.body.id);
-    console.log(doomedUser);
     await doomedUser.destroy();
     res.send(doomedUser);
   } catch (error) {

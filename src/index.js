@@ -1,9 +1,13 @@
-// import { genericLoader } from '../store';
 import React from 'react';
 import { createRoot } from 'react-dom/client';
 import { Provider } from 'react-redux';
 import store, { GS } from '../store';
 import { connect } from 'react-redux';
+
+//setting strings as constants prevents a lot of bugs
+//this can also be done in the constructor if using class components
+const apiRoute = '/api';
+const usersModel = 'users';
 
 class Main extends React.Component {
   constructor() {
@@ -24,7 +28,7 @@ class Main extends React.Component {
 
   componentDidMount() {
     GS.models.forEach((model) => {
-      this.props.genericLoad('/api', model);
+      this.props.genericGet(apiRoute, model);
     });
   }
 
@@ -51,7 +55,7 @@ class Main extends React.Component {
       firstName: this.state.firstNamePost,
       lastName: this.state.lastNamePost,
     };
-    this.props.genericPost('/api', 'users', output);
+    this.props.genericPost(apiRoute, usersModel, output);
     this.setState({
       firstNamePost: '',
       lastNamePost: '',
@@ -59,19 +63,27 @@ class Main extends React.Component {
   }
 
   //either pass an updated object as 'data' or provide a separate identifier object
-  /*{id:selectedUser.id} *or* {email: '123@fakemail.com'} */
+  /*
+  {id:selectedUser.id} *or* {email: '123@fakeEmail.com'} etc
+  */
+  //if no identifier object is passed, GeneralStore will look for an 'id'
+  //property on the data object passed and use that as the identifier
   handleUpdate(ev) {
     ev.preventDefault();
     const { firstNamePut, lastNamePut, selectedUser } = this.state;
     const newInfo = {};
     if (firstNamePut.length) newInfo['firstName'] = firstNamePut;
     if (lastNamePut.length) newInfo['lastName'] = lastNamePut;
-    console.log('>>>', selectedUser, newInfo);
     this.props.genericPut(
-      '/api',
-      'users',
+      apiRoute,
+      usersModel,
+      //as a single data object:
       { ...selectedUser, ...newInfo }
-      // , { id: selectedUser.id }
+      //or, with a separate identifier:
+      /* 
+      newInfo,
+      { id: selectedUser.id }
+      */
     );
     this.setState({
       firstNamePut: '',
@@ -81,15 +93,13 @@ class Main extends React.Component {
   }
 
   handleDelete() {
-    console.log(this.state.selectedUser.id);
-    this.props.genericDelete('/api', 'users', {
+    this.props.genericDelete(apiRoute, usersModel, {
       id: this.state.selectedUser.id,
     });
-    this.setState({ selectedUser: this.props.users[0] });
   }
 
   render() {
-    console.log(this.state, this.props);
+    // console.log(this.state, this.props);
     const { users } = this.props;
     return (
       <div>
@@ -108,7 +118,12 @@ class Main extends React.Component {
             placeholder="lastName"
             onChange={this.handleOnChange}
           ></input>
-          <button onClick={this.handleCreate}>submit</button>
+          <button
+            disabled={!this.state.firstNamePost || !this.state.lastNamePost}
+            onClick={this.handleCreate}
+          >
+            submit
+          </button>
         </form>
         <p>update or delete user</p>
         <select
@@ -140,7 +155,12 @@ class Main extends React.Component {
             placeholder="lastName"
             onChange={this.handleOnChange}
           ></input>
-          <button onClick={this.handleUpdate}>update</button>
+          <button
+            disabled={!this.state.firstNamePut && !this.state.lastNamePut}
+            onClick={this.handleUpdate}
+          >
+            update
+          </button>
         </form>
       </div>
     );
@@ -149,13 +169,13 @@ class Main extends React.Component {
 
 const mapDispatch = (dispatch) => {
   return {
-    genericLoad: (url, slice) => dispatch(GS.genericLoad(url, slice)),
-    genericPost: (url, slice, data) =>
-      dispatch(GS.genericPost(url, slice, data)),
-    genericPut: (url, slice, data, identifier) =>
-      dispatch(GS.genericPut(url, slice, data, identifier)),
-    genericDelete: (url, slice, identifier) =>
-      dispatch(GS.genericDelete(url, slice, identifier)),
+    genericGet: (route, model) => dispatch(GS.genericGet(route, model)),
+    genericPost: (route, model, data) =>
+      dispatch(GS.genericPost(route, model, data)),
+    genericPut: (route, model, data, identifier) =>
+      dispatch(GS.genericPut(route, model, data, identifier)),
+    genericDelete: (route, model, identifier) =>
+      dispatch(GS.genericDelete(route, model, identifier)),
   };
 };
 
