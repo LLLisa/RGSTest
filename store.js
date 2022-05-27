@@ -17,3 +17,6 @@ const reducer = combineReducers({
 const store = createStore(reducer, applyMiddleware(thunk, logger));
 
 export default store;
+
+//Note that no other reducers are linked here. A fully-functional redux store
+//that's less than 20 lines, unreal.

@@ -26,6 +26,8 @@ class Main extends React.Component {
     this.handleDelete = this.handleDelete.bind(this);
   }
 
+  //This is what loads all of the data into the redux store.
+  //If you wish, you can call genericGet models individually.
   componentDidMount() {
     GS.models.forEach((model) => {
       this.props.genericGet(apiRoute, model);
@@ -51,11 +53,11 @@ class Main extends React.Component {
 
   handleCreate(ev) {
     ev.preventDefault();
-    const output = {
+    const data = {
       firstName: this.state.firstNamePost,
       lastName: this.state.lastNamePost,
     };
-    this.props.genericPost(apiRoute, usersModel, output);
+    this.props.genericPost(apiRoute, usersModel, data);
     this.setState({
       firstNamePost: '',
       lastNamePost: '',
@@ -66,7 +68,7 @@ class Main extends React.Component {
   /*
   {id:selectedUser.id} *or* {email: '123@fakeEmail.com'} etc
   */
-  //if no identifier object is passed, GeneralStore will look for an 'id'
+  //if no identifier object is passed, genericPut will look for an 'id'
   //property on the data object passed and use that as the identifier
   handleUpdate(ev) {
     ev.preventDefault();
@@ -126,11 +128,7 @@ class Main extends React.Component {
           </button>
         </form>
         <p>update or delete user</p>
-        <select
-          name="selectedUser"
-          // value={this.state.selectedUser}
-          onChange={this.handleSelect}
-        >
+        <select name="selectedUser" onChange={this.handleSelect}>
           {users.length
             ? users.map((user) => {
                 return (
@@ -167,6 +165,8 @@ class Main extends React.Component {
   }
 }
 
+//note the extra arguments passed into these methods. This is the trade-off
+//for using the general store.
 const mapDispatch = (dispatch) => {
   return {
     genericGet: (route, model) => dispatch(GS.genericGet(route, model)),
