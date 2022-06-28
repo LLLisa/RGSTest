@@ -63,9 +63,9 @@ class ClassComp extends React.Component {
   }
 
   //either pass an updated object as 'data' or provide a separate identifier object
-  /*
-  {id:selectedUser.id} *or* {email: '123@fakeEmail.com'} etc
-  */
+
+  //{id: selectedUser.id} *or* {email: '123@fakeEmail.com'} etc
+
   //if no identifier object is passed, genericPut will look for an 'id'
   //property on the data object passed and use that as the identifier
   handleUpdate(ev) {
@@ -79,11 +79,11 @@ class ClassComp extends React.Component {
       usersModel,
       //as a single data object:
       { ...selectedUser, ...newInfo }
+
       //or, with a separate identifier:
-      /* 
-      newInfo,
-      { id: selectedUser.id }
-      */
+
+      //newInfo,
+      //{ id: selectedUser.id }
     );
     this.setState({
       firstNamePut: '',

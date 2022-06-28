@@ -1,15 +1,28 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useReducer } from 'react';
 import { connect, useDispatch } from 'react-redux';
 import useInput from './useInput';
 import { GS } from '../store';
-import Update from './Update';
+import UpdateUser from './UpdateUser';
 
+//the model route was left as a string in this version to demonstrate flexibility
 const apiRoute = '/api';
 
 function funcComp() {
   const dispatch = useDispatch();
   const firstName = useInput('');
   const lastName = useInput('');
+
+  //you can use the GS.generateReducer method with the useReducer hook...
+
+  //const [users] = useReducer(GS.generateReducer('users'), []);
+
+  //   useEffect(() => {
+  //     dispatch(GS.genericGet(apiRoute, 'users'));
+  //   }, []);
+
+  //but the GS object automatically builds a reducer for each model when it
+  //is created. Therefore, you should use the useReducer hook only for new
+  //pieces of state not declared when the GS object is created.
 
   useEffect(
     () =>
@@ -54,7 +67,7 @@ function funcComp() {
           submit
         </button>
       </form>
-      <Update apiRoute={apiRoute} />
+      <UpdateUser apiRoute={apiRoute} />
     </div>
   );
 }
