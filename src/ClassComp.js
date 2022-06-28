@@ -120,7 +120,7 @@ class ClassComp extends React.Component {
             onChange={this.handleOnChange}
           ></input>
           <button
-            disabled={!this.state.firstNamePost && !this.state.lastNamePost}
+            disabled={!this.state.firstNamePost || !this.state.lastNamePost}
             onClick={this.handleCreate}
           >
             submit

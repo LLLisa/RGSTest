@@ -21,6 +21,13 @@ function update({ apiRoute, users }) {
     );
   }
 
+  //either pass an updated object as 'data' or provide a separate identifier object
+
+  //{id: selectedUser.id} *or* {email: '123@fakeEmail.com'} etc
+
+  //if no identifier object is passed, genericPut will look for an 'id'
+  //property on the data object passed and use that as the identifier
+
   function handleSubmit(ev) {
     ev.preventDefault();
 

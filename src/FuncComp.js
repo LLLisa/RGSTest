@@ -63,10 +63,11 @@ function funcComp() {
           onChange={lastName.onChange}
           placeholder='lastName'
         ></input>
-        <button disabled={!firstName.value.length && !lastName.value.length}>
+        <button disabled={!firstName.value.length || !lastName.value.length}>
           submit
         </button>
       </form>
+      {/*apiRoute is passed as a prop here, but it could be passed using useContext if preferred*/}
       <UpdateUser apiRoute={apiRoute} />
     </div>
   );
