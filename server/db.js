@@ -1,4 +1,4 @@
-// createdb acme_db
+// $ createdb acme_db
 
 const Sequelize = require('sequelize');
 const db = new Sequelize('postgres://localhost/acme_db', { logging: false });

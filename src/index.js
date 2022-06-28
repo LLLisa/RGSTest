@@ -1,4 +1,4 @@
-import React, { createContext } from 'react';
+import React from 'react';
 import { createRoot } from 'react-dom/client';
 import { Provider } from 'react-redux';
 import store from '../store';
@@ -9,8 +9,8 @@ class Root extends React.Component {
   render() {
     return (
       <div>
-        <h1>open dev console >>></h1>
-        {/* <ClassComp /> */}
+        <h1>open dev console</h1>
+        <ClassComp />
         <FuncComp />
       </div>
     );

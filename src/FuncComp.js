@@ -14,15 +14,19 @@ function funcComp() {
 
   //you can use the GS.generateReducer method with the useReducer hook...
 
-  //const [users] = useReducer(GS.generateReducer('users'), []);
+  //   const [names, dispatch] = useReducer(GS.generateReducer('names'), [
+  //     'Bart',
+  //     'Lisa',
+  //   ]);
 
   //   useEffect(() => {
-  //     dispatch(GS.genericGet(apiRoute, 'users'));
+  //     dispatch({ type: 'POST_names', payload: 'Maggie' });
   //   }, []);
 
-  //but the GS object automatically builds a reducer for each model when it
+  //(note the GS naming convention: 'POST_names')
+  //...but the GS object automatically builds a reducer for each model when it
   //is created. Therefore, you should use the useReducer hook only for new
-  //pieces of state not declared when the GS object is created.
+  //pieces of state that were not declared when the GS object is created.
 
   useEffect(
     () =>
