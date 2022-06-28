@@ -64,6 +64,8 @@ const init = async () => {
 
 init();
 
+//api-----------------------------------------------------
+
 // app.use('/index.js', express.static(path.join(__dirname, './index.js')));
 app.use('/dist', express.static(path.join(__dirname, './dist')));
 app.use(express.json());

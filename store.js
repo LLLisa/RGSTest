@@ -1,13 +1,14 @@
-import { createStore, combineReducers, applyMiddleware } from 'redux';
-import thunk from 'redux-thunk';
-import logger from 'redux-logger';
+import { createStore, combineReducers, applyMiddleware } from "redux";
+import thunk from "redux-thunk";
+import logger from "redux-logger";
 
-import GeneralStore from 'redux-general-store';
+// import GeneralStore from 'redux-general-store';
+import GeneralStore from "/home/lisa/Code/recreational-code/ReduxGeneralStore/package/index.js";
 
-export const GS = new GeneralStore('http://localhost:9001', [
-  'users',
-  'accounts',
-  'files',
+export const GS = new GeneralStore("http://localhost:9001", [
+  "users",
+  "accounts",
+  "files",
 ]);
 
 const reducer = combineReducers({

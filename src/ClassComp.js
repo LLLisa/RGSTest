@@ -100,34 +100,34 @@ class ClassComp extends React.Component {
 
   render() {
     // console.log(this.state, this.props);
-    console.log(GS.reducerBody.users)
     const { users } = this.props;
     return (
       <div>
-        <h1>Open Console</h1>
+        <hr />
+        <h2>in Class Component:</h2>
         <p>create user</p>
         <form>
           <input
-            name="firstNamePost"
+            name='firstNamePost'
             value={this.state.firstNamePost}
-            placeholder="firstName"
+            placeholder='firstName'
             onChange={this.handleOnChange}
           ></input>
           <input
-            name="lastNamePost"
+            name='lastNamePost'
             value={this.state.lastNamePost}
-            placeholder="lastName"
+            placeholder='lastName'
             onChange={this.handleOnChange}
           ></input>
           <button
-            disabled={!this.state.firstNamePost || !this.state.lastNamePost}
+            disabled={!this.state.firstNamePost && !this.state.lastNamePost}
             onClick={this.handleCreate}
           >
             submit
           </button>
         </form>
         <p>update or delete user</p>
-        <select name="selectedUser" onChange={this.handleSelect}>
+        <select name='selectedUser' onChange={this.handleSelect}>
           {users.length
             ? users.map((user) => {
                 return (
@@ -141,15 +141,15 @@ class ClassComp extends React.Component {
         <button onClick={this.handleDelete}>delete</button>
         <form>
           <input
-            name="firstNamePut"
+            name='firstNamePut'
             value={this.state.firstNamePut}
-            placeholder="firstName"
+            placeholder='firstName'
             onChange={this.handleOnChange}
           ></input>
           <input
-            name="lastNamePut"
+            name='lastNamePut'
             value={this.state.lastNamePut}
-            placeholder="lastName"
+            placeholder='lastName'
             onChange={this.handleOnChange}
           ></input>
           <button
